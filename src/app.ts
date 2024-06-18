@@ -14,6 +14,7 @@ const io = new Server(httpServer);
 
 app.get('/', (req, res) => {
   console.log("Hello world!");
+  res.json("hello world!");
 })
 
 AppDataSource.initialize()

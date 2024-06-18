@@ -12,6 +12,10 @@ const port = 5000;
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
+app.get('/', (req, res) => {
+  console.log("Hello world!");
+})
+
 AppDataSource.initialize()
   .then(() => {
     console.log('Database connected successfully');

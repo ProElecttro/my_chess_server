@@ -4,17 +4,17 @@ import "reflect-metadata";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import AppDataSource from "./ormconfig";
+import AppDataSouce from "./ormconfig";
 import handleSocketEvents from "./socketHandlers";
 
 const app = express();
-const port = 5000;
+const port = 8000;
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
 app.get('/', (req, res) => {
   console.log("Hello world!");
-  res.json("hello world!");
+  res.send("hello world!");
 })
 
 AppDataSource.initialize()

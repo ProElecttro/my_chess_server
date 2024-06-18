@@ -4,7 +4,7 @@ import "reflect-metadata";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import AppDataSouce from "./ormconfig";
+import AppDataSource from "./ormconfig";
 import handleSocketEvents from "./socketHandlers";
 
 const app = express();

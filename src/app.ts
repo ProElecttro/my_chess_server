@@ -11,6 +11,8 @@ const port = 3002;
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
+
+
 AppDataSource.initialize()
   .then(() => {
     console.log('Database connected successfully');

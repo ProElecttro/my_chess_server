@@ -8,10 +8,18 @@ import handleSocketEvents from "./socketHandlers";
 
 const app = express();
 const port = 8000;
+
+// Enable CORS for all routes
+app.use(cors({
+  origin: "*", // Adjust this according to your security needs
+  methods: ["GET", "POST"],
+  allowedHeaders: ["Content-Type", "Authorization"]
+}));
+
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "*",
+    origin: "*", // Allow all origins
   }
 });
 
@@ -25,7 +33,7 @@ AppDataSource.initialize()
     console.log('Database connected successfully');
     handleSocketEvents(io);
     httpServer.listen(port, '0.0.0.0', () => {
-      console.log(`Server running on http://13.232.79-219:8000/`);
+      console.log(`Server running on http://ec2-13-232-79-219.ap-south-1.compute.amazonaws.com:${port}/`);
     });
   })
   .catch((error) => {

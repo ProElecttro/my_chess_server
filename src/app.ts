@@ -2,7 +2,6 @@ import "reflect-metadata";
 import express from "express";
 import { createServer } from "http";
 import { Server } from "socket.io";
-import cors from "cors"; // Import CORS middleware
 import AppDataSource from "./ormconfig";
 import handleSocketEvents from "./socketHandlers";
 
@@ -11,9 +10,9 @@ const port = 8000;
 const httpServer = createServer(app);
 const io = new Server(httpServer);
 
-// Enable CORS middleware
+import cors  from "cors";
 app.use(cors({
-  origin: "*"
+  origin: "http://localhost:3000/"
 }));
 
 // Example route with CORS enabled

@@ -19,11 +19,6 @@ app.use(cors({
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
 
-// HTTPS server setup using __dirname to construct the absolute path
-const httpsOptions = {
-  key: readFileSync(path.resolve(__dirname, './my_chess_server.pem')),
-};
-
 const httpServer = http.createServer(app);
 
 // Socket.IO setup

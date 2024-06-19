@@ -7,6 +7,7 @@ import { readFileSync } from "fs";
 import handleSocketEvents from "./socketHandlers";
 import AppDataSource from "./ormconfig";
 import path from "path"; // Import path module for working with file paths
+import http from "http";
 
 const app = express();
 const port = 8000;
@@ -23,10 +24,10 @@ const httpsOptions = {
   key: readFileSync(path.resolve(__dirname, './my_chess_server.pem')),
 };
 
-const httpsServer = createServer(httpsOptions, app);
+const httpServer = http.createServer(app);
 
 // Socket.IO setup
-const io = new Server(httpsServer, {
+const io = new Server(httpServer, {
   cors: {
     origin: "*",
   }
@@ -43,7 +44,7 @@ AppDataSource.initialize()
   .then(() => {
     console.log('Database connected successfully');
     handleSocketEvents(io);
-    httpsServer.listen(port, '0.0.0.0', () => {
+    httpServer.listen(port, () => {
       console.log(`Server running on https://ec2-13-232-79-219.ap-south-1.compute.amazonaws.com:${port}/`);
     });
   })

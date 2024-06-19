@@ -9,9 +9,8 @@ import handleSocketEvents from "./socketHandlers";
 const app = express();
 const port = 8000;
 
-// Enable CORS for all routes
 app.use(cors({
-  origin: "*", // Adjust this according to your security needs
+  origin: "*",
   methods: ["GET", "POST"],
   allowedHeaders: ["Content-Type", "Authorization"]
 }));
@@ -19,7 +18,7 @@ app.use(cors({
 const httpServer = createServer(app);
 const io = new Server(httpServer, {
   cors: {
-    origin: "*", // Allow all origins
+    origin: "*",
   }
 });
 

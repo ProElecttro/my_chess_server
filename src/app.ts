@@ -12,9 +12,9 @@ const httpServer = createServer(app);
 const io = new Server(httpServer);
 
 // Enable CORS middleware
-app.use(cors({
-  origin: "*"
-}));
+// app.use(cors({
+//   origin: "*"
+// }));
 
 // Example route with CORS enabled
 app.get('/', (req, res) => {

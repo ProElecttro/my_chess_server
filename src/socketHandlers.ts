@@ -47,7 +47,12 @@ export function handleSocketEvents(io: Server) {
         socket.join(roomCode);
 
         // Notify other clients in the room about new player
-        io.to(roomCode).emit("playerJoined", playerName);
+        let playerColor = "white";
+        if (room.players.length === 2) {
+          playerColor = "black";
+        }
+
+        io.to(roomCode).emit("playerJoined", playerName, playerColor);
 
         if (room.players.length === 2) {
           // Initialize a new game when two players are present

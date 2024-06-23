@@ -59,7 +59,7 @@ export function handleSocketEvents(io: Server) {
           await gameRepository.save(game);
 
           // Emit startGame event to both players
-          io.to(roomCode).emit("startGame", { gameId: game.id, board: game.board });
+          io.to(roomCode).emit("startGame", { gameId: room.code, board: game.board });
         }
       } catch (error) {
         console.error("Error joining room:", error);
@@ -67,33 +67,44 @@ export function handleSocketEvents(io: Server) {
       }
     });
 
-    socket.on("makeMove", async (gameId: number, from: string, to: string, playerName: string) => {
+    socket.on("makeMove", async (roomId: string, from: string, to: string, playerName: string) => {
       const gameRepository = AppDataSource.getRepository(Game);
       const moveRepository = AppDataSource.getRepository(Move);
       const playerRepository = AppDataSource.getRepository(Player);
-
+      const roomRepository = AppDataSource.getRepository(Room);
+    
       try {
-        const game = await gameRepository.findOne({ where: { id: gameId }, relations: ["moves", "room"] });
-
+        const room = await roomRepository.findOne({ where: { code: roomId }, relations: ["games"] });
+    
+        if (!room) {
+          console.error("Room not found.");
+          socket.emit("error", "Room not found.");
+          return;
+        }
+    
+        const game = room.games.find(g => g.status === "ongoing");
+    
         if (!game) {
           console.error("Game not found.");
+          socket.emit("error", "Game not found.");
           return;
         }
-
+    
         const player = await playerRepository.findOne({ where: { name: playerName } });
-
+    
         if (!player) {
           console.error("Player not found.");
+          socket.emit("error", "Player not found.");
           return;
         }
-
+    
         const move = new Move();
         move.from = from;
         move.to = to;
         move.game = game;
         move.player = player;
         await moveRepository.save(move);
-
+    
         // Handle move logic based on the piece type
         const piece = getPieceAtPosition(game, from);
         let highlight;
@@ -120,17 +131,18 @@ export function handleSocketEvents(io: Server) {
             console.error("Invalid piece type.");
             return;
         }
-
+    
         game.moves.push(move);
         await gameRepository.save(game);
-
+    
         // Emit moveMade event to all clients in the room
-        io.to(game.room.code).emit("moveMade", { moves: game.moves, highlight, board: game.board });
+        io.to(roomId).emit("moveMade", { moves: game.moves, highlight, board: game.board });
       } catch (error) {
         console.error("Error making move:", error);
         // Handle error making move
       }
     });
+    
 
     socket.on("disconnect", () => {
       console.log("Client disconnected");
@@ -140,7 +152,7 @@ export function handleSocketEvents(io: Server) {
 }
 
 const getPieceAtPosition = (game: Game, position: string) => {
-  const [x, y] = position.split("").map(Number);
+  const [x, y] = position.split("-").map(Number);
   return game.board[x][y]?.type; // Returns piece type or undefined if position is empty
 };
 

@@ -8,6 +8,7 @@ const Player_1 = require("./entities/Player");
 const Room_1 = require("./entities/Room");
 const AppDataSource = new typeorm_1.DataSource({
     type: "postgres",
+    host: "localhost",
     port: 5432,
     username: "postgres",
     password: "Vms@#8843",

@@ -2,6 +2,8 @@
 
 Welcome to the server-side repository of my online chess game project! This application is built using Node.js and Express, featuring real-time gameplay powered by Socket.io. The entire logic of the chess game was implemented from scratch without using any external APIs.
 
+- Hosted on AWS: [Play on AWS](http://15.206.72.127:3000/)
+
 ## Demo
 
 Check out this cool video showcasing the game:
@@ -11,7 +13,6 @@ Check out this cool video showcasing the game:
 You can also play the game online:
 - Hosted on AWS: [Play on AWS](http://15.206.72.127:3000/)
 - Hosted on Vercel: [Play on Vercel](https://my-chess-eta.vercel.app/)
-
 
 ## Table of Contents
 
